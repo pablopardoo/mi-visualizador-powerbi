@@ -7,8 +7,9 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             background-color: #f0f0f0;
         }
@@ -17,32 +18,75 @@
             height: 80vh;
             border: none;
         }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 80vw;
+            margin-top: 10px;
+        }
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="content"></div>
+    <div class="controls">
+        <button onclick="previousSlide()">⬅️ Anterior</button>
+        <button onclick="togglePlayPause()">⏸️ Pausar</button>
+        <button onclick="nextSlide()">➡️ Siguiente</button>
+    </div>
 
     <script>
         let currentIndex = 0;
+        let isPlaying = true;
+        let interval;
+        
         const elements = [
-            '<iframe src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9" allowfullscreen></iframe>',
-            '<input type="file" id="imageUpload" accept="image/*" onchange="loadImage(event)" /><br><img id="uploadedImage" style="display:none;">',
-            '<iframe src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9" allowfullscreen></iframe>'
+            '<iframe src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9&pageName=ReportSection4" allowfullscreen></iframe>',
+            '<img src="image.png" alt="Imagen Cargada" style="width: 80vw; height: 80vh;">',
+            '<iframe src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9&pageName=ReportSection2" allowfullscreen></iframe>'
         ];
-
-        function loadImage(event) {
-            const image = document.getElementById("uploadedImage");
-            image.src = URL.createObjectURL(event.target.files[0]);
-            image.style.display = "block";
-        }
 
         function updateContent() {
             document.getElementById("content").innerHTML = elements[currentIndex];
-            currentIndex = (currentIndex + 1) % elements.length;
         }
-
+        
+        function startRotation() {
+            interval = setInterval(() => {
+                nextSlide();
+            }, 60000);
+        }
+        
+        function stopRotation() {
+            clearInterval(interval);
+        }
+        
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % elements.length;
+            updateContent();
+        }
+        
+        function previousSlide() {
+            currentIndex = (currentIndex - 1 + elements.length) % elements.length;
+            updateContent();
+        }
+        
+        function togglePlayPause() {
+            if (isPlaying) {
+                stopRotation();
+                document.querySelector('.controls button:nth-child(2)').innerText = '▶️ Reanudar';
+            } else {
+                startRotation();
+                document.querySelector('.controls button:nth-child(2)').innerText = '⏸️ Pausar';
+            }
+            isPlaying = !isPlaying;
+        }
+        
         updateContent();
-        setInterval(updateContent, 60000); // Cambia cada 1 minuto
+        startRotation();
     </script>
 </body>
 </html>
