@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización Rotativa</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        iframe, img {
+            width: 80vw;
+            height: 80vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+
+    <script>
+        let currentIndex = 0;
+        const elements = [
+            '<iframe src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9" allowfullscreen></iframe>',
+            '<input type="file" id="imageUpload" accept="image/*" onchange="loadImage(event)" /><br><img id="uploadedImage" style="display:none;">',
+            '<iframe src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9" allowfullscreen></iframe>'
+        ];
+
+        function loadImage(event) {
+            const image = document.getElementById("uploadedImage");
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.style.display = "block";
+        }
+
+        function updateContent() {
+            document.getElementById("content").innerHTML = elements[currentIndex];
+            currentIndex = (currentIndex + 1) % elements.length;
+        }
+
+        updateContent();
+        setInterval(updateContent, 60000); // Cambia cada 1 minuto
+    </script>
+</body>
+</html>
