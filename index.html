@@ -46,12 +46,17 @@
         
         const elements = [
             '<iframe title="Pizarras TPM (2)" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9&pageName=0fa878d3d6193ac61889" frameborder="0" allowFullScreen="true"></iframe>',
-            '<iframe src="https://sites.google.com/ccu.cl/reportes?usp=sharing" sandbox="allow-scripts allow-same-origin allow-forms" frameborder="0" allowFullScreen="true"></iframe>',
+            'openGoogleSite()',
             '<iframe title="Pizarras TPM (2)" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZThjYjIzOWQtMTQxNy00ZGRkLWJmZTAtYjFjY2ViNTZiMWYyIiwidCI6IjNlMWRkZWYwLTAxZjctNGYyZS1hM2NjLWYxNTkwMWVjZjA2ZCJ9&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>'
         ];
 
         function updateContent() {
-            document.getElementById("content").innerHTML = elements[currentIndex];
+            if (elements[currentIndex] === 'openGoogleSite()') {
+                window.open("https://sites.google.com/ccu.cl/reportes?usp=sharing", "_blank");
+                nextSlide();
+            } else {
+                document.getElementById("content").innerHTML = elements[currentIndex];
+            }
         }
         
         function startRotation() {
